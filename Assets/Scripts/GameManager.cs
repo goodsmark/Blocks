@@ -6,14 +6,25 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 
-    void Update()
+    EnemyBlockSpawner _blockSpawner;
+    private void Start()
+    {
+        _blockSpawner = FindObjectOfType<EnemyBlockSpawner>();
+    }
+    void FixedUpdate()
     {
         GameObject[] remainingObj = GameObject.FindGameObjectsWithTag("EnemyBlock");
-        if (remainingObj.Length == 1)
+        if (remainingObj.Length == 0)
         {
-            SceneManager.LoadScene(0);
+            _blockSpawner.SpawnEnemy();
             Enemy.multyplySpeedEnemy += 1;
-            print(Enemy.multyplySpeedEnemy);
+            GUI.gUI._lvl += 1;
         }
+        GameObject pref = GameObject.FindGameObjectWithTag("Ball");
+        if (pref == null)
+        {
+            Player.isCreated = false;
+        }
+
     }
 }

@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
+
         if (Input.GetMouseButton(0))
         {
             if (!isCreated)
@@ -47,7 +48,6 @@ public class Player : MonoBehaviour
         GameObject pref = Instantiate(_ball, _ballPosition.position, _ball.transform.rotation);
         pref.GetComponent<Rigidbody>().AddForce(-_ballPosition.transform.forward * ((10 + speed) * multiply));
         Destroy(pref, 7f);
-
     }
     void Aiming()
     {
