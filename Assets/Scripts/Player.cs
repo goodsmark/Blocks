@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        PlayOnPhone();
+       // PlayOnPhone();
         PlayOnPC();
 
     }
@@ -97,7 +97,7 @@ public class Player : MonoBehaviour
         Vector3 mouseInWorld = ray.GetPoint(enter);
         Vector3 position = mouseInWorld - _ballPosition.transform.position;
         _ballPosition.transform.rotation = Quaternion.LookRotation(position);
-        if (position.z >= 0f && position.z <= 4f && position.x <= 6.5f && position.x >= -6.5f)
+        if (position.z >= 0f && position.z <= 5f && position.x <= 6f && position.x >= -6f)
         {
             _player.transform.position = _ballPosition.position + position;
         }
