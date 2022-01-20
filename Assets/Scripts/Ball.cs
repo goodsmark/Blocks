@@ -19,11 +19,6 @@ public class Ball : MonoBehaviour
             }
 
             Player.isCreated = false;
-            //    GameObject[] remainingObj = GameObject.FindGameObjectsWithTag("Enemy");
-            //    if (remainingObj.Length == 1)
-            //    {
-            //        EnemySpawner.isFinal = true;
-            //    }
         }
     }
 }

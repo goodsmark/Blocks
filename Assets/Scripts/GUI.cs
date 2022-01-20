@@ -9,10 +9,13 @@ public class GUI : MonoBehaviour
     public static GUI gUI;
     public Image menuPanel;
     public Image arrow;
+    public Vector3 arrowOffset;
     [SerializeField] Text _score;
 
     [SerializeField] Player _player;
     [HideInInspector] public int _lvl = 1;
+    const float arrowPosX = 0.01f;
+    float divideArrowOffsetX = 5f;
     void Start()
     {
         arrow.gameObject.SetActive(false);
@@ -31,7 +34,18 @@ public class GUI : MonoBehaviour
     {
         _score.text = "Уровень :" + _lvl;
 
-        arrow.transform.position = Camera.main.WorldToScreenPoint(_player._player.transform.position);
-        arrow.transform.rotation = Quaternion.LookRotation(_player._player.transform.position, -Vector3.forward);
+        arrow.transform.position = Camera.main.WorldToScreenPoint(_player._player.position + arrowOffset);
+        var newRotation = Quaternion.LookRotation(_player._ballPosition.position - _player._player.position - Vector3.up*90, -Vector3.up);
+        newRotation.x = arrowPosX;
+        if (_player._player.position.x > 0.1)
+        {
+            arrowOffset.x = -_player._player.position.x / divideArrowOffsetX;
+        }
+        else if (_player._player.position.x < -0.1f)
+        {
+            arrowOffset.x = _player._player.position.x / -divideArrowOffsetX;
+        }        
+        arrow.transform.rotation = newRotation;
+        print(_player._player.transform.position.x);
     }
 }

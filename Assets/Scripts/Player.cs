@@ -1,22 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class Player : MonoBehaviour
 {
+    
     public static bool isCreated = false;
-
+    [Header("Ball speed")]
     [SerializeField] float multiply;
+    [SerializeField] float _plusSpeedForBall;
+    [Header("Game Object-s")]
+    [Space(5f)]
     [SerializeField] GameObject _ball;
-
+    [SerializeField] float _timeDestroyBall =7f;
     public Transform _ballPosition;
     public Transform _player;
 
     Camera mainCamera;
-
     Vector3 _originalPlayerPos;
-    float _power;
-   
+
+   public float _power;
+    float _minPower = 0.6f;
+    float _maxPower = 4f;
 
 
     private void Start()
@@ -29,17 +35,17 @@ public class Player : MonoBehaviour
     {
        // PlayOnPhone();
         PlayOnPC();
-
     }
     void PlayOnPC()
     {
-        if (Input.GetMouseButton(0) && Input.mousePosition.y >= 210 && Input.mousePosition.y <= 270)
+
+        if (Input.GetMouseButton(0))
         {
             if (!isCreated)
             {
                 Aiming();
                 GUI.gUI.arrow.gameObject.SetActive(true);
-                GUI.gUI.arrow.fillAmount = Mathf.InverseLerp(0, 4f, _power);
+                GUI.gUI.arrow.fillAmount = Mathf.InverseLerp(_minPower, _maxPower, _power);
             }
         }
         if (Input.GetMouseButtonUp(0))
@@ -55,7 +61,9 @@ public class Player : MonoBehaviour
     }
     void PlayOnPhone()
     {
-        if (Input.touchCount > 0)
+
+        const byte _zero = 0;
+        if (Input.touchCount > _zero)
         {
             Touch touch = Input.GetTouch(0);
 
@@ -67,7 +75,7 @@ public class Player : MonoBehaviour
                     {
                         Aiming();
                         GUI.gUI.arrow.gameObject.SetActive(true);
-                        GUI.gUI.arrow.fillAmount = Mathf.InverseLerp(0, 4f, _power);
+                        GUI.gUI.arrow.fillAmount = Mathf.InverseLerp(_minPower, _maxPower, _power);
                     }
                     break;
                 case TouchPhase.Ended:
@@ -86,25 +94,31 @@ public class Player : MonoBehaviour
     void Shoot(float speed)
     {
         GameObject pref = Instantiate(_ball, _ballPosition.position, _ball.transform.rotation);
-        pref.GetComponent<Rigidbody>().AddForce(-_ballPosition.transform.forward * ((10 * speed) * multiply));
-        Destroy(pref, 7f);
+        pref.GetComponent<Rigidbody>().AddForce(-_ballPosition.transform.forward * ((_plusSpeedForBall * speed) * multiply));
+        Destroy(pref, _timeDestroyBall);
     }
     void Aiming()
     {
         float enter;
+        float minPoz_Z = 0;
+        float maxPoz_Z = 5f;
+        float minPoz_x = 6f;
+        float maxPoz_x = -6f;
+
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         new Plane(-Vector3.up, _ballPosition.transform.position).Raycast(ray, out enter);
         Vector3 mouseInWorld = ray.GetPoint(enter);
         Vector3 position = mouseInWorld - _ballPosition.transform.position;
         _ballPosition.transform.rotation = Quaternion.LookRotation(position);
-        if (position.z >= 0f && position.z <= 5f && position.x <= 6f && position.x >= -6f)
+        if (position.z >= minPoz_Z && position.z <= maxPoz_Z && position.x <= minPoz_x && position.x >= maxPoz_x)
         {
             _player.transform.position = _ballPosition.position + position;
         }
         
-        if (position.z < 4 && position.z >1)
+        if (position.z <= _maxPower && position.z > _minPower)
         {
             _power = position.z;
         }
+
     }
 }

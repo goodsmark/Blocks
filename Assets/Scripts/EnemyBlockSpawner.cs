@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyBlockSpawner : MonoBehaviour
 {
     public static EnemyBlockSpawner enemyBlockSpawner;
+
     [SerializeField] GameObject enemyPrefab;
     [SerializeField] GameObject[] _enemyBlocksPosition;
 

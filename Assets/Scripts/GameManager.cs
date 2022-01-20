@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] byte _lvlCount = 1;
 
     EnemyBlockSpawner _blockSpawner;
     private void Start()
@@ -17,8 +18,9 @@ public class GameManager : MonoBehaviour
         if (remainingObj.Length == 0)
         {
             _blockSpawner.SpawnEnemy();
-            Enemy.multyplySpeedEnemy += 1;
-            GUI.gUI._lvl += 1;
+            Enemy.multyplySpeedEnemy += _lvlCount;
+            GUI.gUI._lvl += _lvlCount;
+
         }
         GameObject pref = GameObject.FindGameObjectWithTag("Ball");
         if (pref == null)
