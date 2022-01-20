@@ -29,12 +29,13 @@ public class Player : MonoBehaviour
     {
         mainCamera = Camera.main;
         _originalPlayerPos = _player.transform.position;
+        Input.simulateMouseWithTouches = true;
     }
 
-    void FixedUpdate()
+    void Update()
     {
-       // PlayOnPhone();
         PlayOnPC();
+        //PlayOnPhone();
     }
     void PlayOnPC()
     {
@@ -70,23 +71,15 @@ public class Player : MonoBehaviour
             
             switch (touch.phase)
             {
-                case TouchPhase.Moved:
-                    if (!isCreated)
-                    {
-                        Aiming();
-                        GUI.gUI.arrow.gameObject.SetActive(true);
-                        GUI.gUI.arrow.fillAmount = Mathf.InverseLerp(_minPower, _maxPower, _power);
-                    }
-                    break;
                 case TouchPhase.Ended:
-                    _player.transform.position = Vector3.Lerp(_player.transform.position, _originalPlayerPos, Time.time);
-                    if (!isCreated)
-                    {
-                        GUI.gUI.arrow.gameObject.SetActive(false);
-                        Shoot(_power);
-                        isCreated = true;
-                    }
-                    break;
+                _player.transform.position = Vector3.Lerp(_player.transform.position, _originalPlayerPos, Time.time);
+                if (!isCreated)
+                {
+                    GUI.gUI.arrow.gameObject.SetActive(false);
+                    Shoot(_power);
+                    isCreated = true;
+                }
+                break;
             }
         }
     }
@@ -119,6 +112,6 @@ public class Player : MonoBehaviour
         {
             _power = position.z;
         }
-
+        
     }
 }
