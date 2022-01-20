@@ -37,15 +37,14 @@ public class GUI : MonoBehaviour
         arrow.transform.position = Camera.main.WorldToScreenPoint(_player._player.position + arrowOffset);
         var newRotation = Quaternion.LookRotation(_player._ballPosition.position - _player._player.position - Vector3.up*90, -Vector3.up);
         newRotation.x = arrowPosX;
-        if (_player._player.position.x > 0.1)
+        if (_player._player.position.x > arrowPosX)
         {
             arrowOffset.x = -_player._player.position.x / divideArrowOffsetX;
         }
-        else if (_player._player.position.x < -0.1f)
+        else if (_player._player.position.x < -arrowPosX)
         {
             arrowOffset.x = _player._player.position.x / -divideArrowOffsetX;
-        }        
+        }
         arrow.transform.rotation = newRotation;
-        print(_player._player.transform.position.x);
     }
 }

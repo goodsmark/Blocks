@@ -94,7 +94,7 @@ public class Player : MonoBehaviour
     void Shoot(float speed)
     {
         GameObject pref = Instantiate(_ball, _ballPosition.position, _ball.transform.rotation);
-        pref.GetComponent<Rigidbody>().AddForce(-_ballPosition.transform.forward * ((_plusSpeedForBall * speed) * multiply));
+        pref.GetComponent<Rigidbody>().AddForce(_ballPosition.transform.forward * ((_plusSpeedForBall * speed) * multiply));
         Destroy(pref, _timeDestroyBall);
     }
     void Aiming()
